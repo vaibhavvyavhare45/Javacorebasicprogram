@@ -7,12 +7,18 @@ import com.prowings.Employee;
 public class EmployeeDemo {
     public static void main(String[] args) {
         List<Employee> al=new ArrayList<Employee>();
-        al.add(new Employee(1001,"vaibhav vyavhare","male",45000.00,"IT","washim"));
         al.add(new Employee(1002,"pranav ketgale","male",60000.00,"NETWORKING","pune"));
-        al.add(new Employee(1003,"marish mokal","male",55000.00,"HR","raygad"));
+        al.add(new Employee(1001,"vaibhav vyavhare","male",45000.00,"IT","washim"));
         al.add(new Employee(1004,"vishwajit rhaykar","male",54000.00,"IT","kolhapur"));
+        al.add(new Employee(1003,"marish mokal","male",55000.00,"HR","raygad"));
         al.add(new Employee(1005,"kasturi","female",44000,"IT","Amravati"));
         al.add(new Employee(1006,"kalyani","female",50000,"Account","Nagpur"));
+
+
+
+        al.sort((n1,n2)->n1.geteId()-n2.geteId());
+        System.out.println(al);
+
 
         //java
         List<Employee> highSal= al.stream().filter(e1 ->e1.salary>50000.00).collect(Collectors.toList());
@@ -60,11 +66,30 @@ public class EmployeeDemo {
         System.out.println(avgSal);
 
 
-       List<Employee> sortedEmployeeById=al.stream().sorted(Comparator.comparing(e->e.geteId())).collect(Collectors.toList());
+       List<Employee> sortedEmployeeById=al.stream().sorted(Comparator.comparing(e->e.eId)).collect(Collectors.toList());
         System.out.println(sortedEmployeeById);
 
         List<Employee> descSortedEmpById=al.stream().sorted(Comparator.comparing(Employee::geteId,Comparator.reverseOrder())).collect(Collectors.toList());
         System.out.println(descSortedEmpById);
+
+
+        List<Employee> s=al.stream().map(e->{
+            if(e.salary<=44000){
+                e.setSalary(e.getSalary());
+            }
+            return e;
+
+        }).collect(Collectors.toList());
+        System.out.println(s);
+
+
+        Map<String,List<Employee>> mp=al.stream()
+                .sorted(Comparator.comparing(Employee::geteId))
+                .collect(Collectors.groupingBy(Employee::getDepartment));
+        mp.forEach((department,idList)->{
+            System.out.println(department+": ");
+           idList.forEach(e-> System.out.println("\t"+e.geteId()));
+        });
 
     }
 }
